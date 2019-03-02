@@ -1,0 +1,2 @@
+# github.com/eidolon/wordwrap v0.0.0-20161011182207-e0f54129b8bb
+github.com/eidolon/wordwrap
