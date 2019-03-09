@@ -5,6 +5,8 @@ import (
 	"time"
 )
 
+const summerSolstice2019 = "2019-06-21"
+
 // Date models the date.
 type Date struct {
 	Year  *int
@@ -18,6 +20,7 @@ func NewDate(year, month, day *int) *Date {
 }
 
 // GetTime returns the Date as time.Time in some semi-sensible way, if applicable.
+// Summer solstice of certain, fixed year might be a reasonable option.
 func (d *Date) GetTime() (time.Time, error) {
 	layout := "2006.01.02"
 	log.Fatalf("implement me: %s", layout)
