@@ -14,7 +14,7 @@ type Date struct {
 	Day   *int
 }
 
-// NewDate returns a pointer to a new Date
+// NewDate returns a pointer to a new Date.
 func NewDate(year, month, day *int) *Date {
 	return &Date{year, month, day}
 }
@@ -27,4 +27,9 @@ func (d *Date) GetTime() (time.Time, error) {
 
 	// FIXME
 	return time.Now(), nil
+}
+
+// PGN returns the date in PGN format.
+func (d *Date) PGN() string {
+	return "FIXME"
 }
