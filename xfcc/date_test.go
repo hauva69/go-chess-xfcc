@@ -12,7 +12,7 @@ const paulKeresWasBornInISO8601 = "1916-01-07"
 // at least the ICCF implementation has no leading zeros
 const paulKeresWasBornInXFCC = "1916-1-7"
 
-func TestDatePgn(t *testing.T) {
+func TestDatePGN(t *testing.T) {
 	expected := "1916.01.07"
 	year := 1916
 	month := 1
