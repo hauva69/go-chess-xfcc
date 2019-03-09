@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-const summerSolstice2019 = "1916-06-21"
+const summerSolstice1916 = "1916-06-21"
 
 // Date models the date.
 type Date struct {
