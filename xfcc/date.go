@@ -1,6 +1,7 @@
 package xfcc
 
 import (
+	"fmt"
 	"log"
 	"time"
 )
@@ -34,5 +35,23 @@ func (d *Date) GetTime() (time.Time, error) {
 
 // PGN returns the date in PGN format.
 func (d *Date) PGN() string {
-	return "FIXME"
+	s := "????."
+
+	if d.Year != nil {
+		s = fmt.Sprintf("%04d.", *d.Year)
+	}
+
+	if d.Month == nil {
+		s = fmt.Sprintf("%s??.", s)
+	} else {
+		s = fmt.Sprintf("%s%02d.", s, *d.Month)
+	}
+
+	if d.Day == nil {
+		s = fmt.Sprintf("%s??", s)
+	} else {
+		s = fmt.Sprintf("%s%02d", s, *d.Day)
+	}
+
+	return s
 }
