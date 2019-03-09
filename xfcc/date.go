@@ -7,6 +7,9 @@ import (
 
 const summerSolstice1916 = "1916-06-21"
 
+// PGNLayout is date layout for PGN tags.
+const PGNLayout = "2006.01.02"
+
 // Date models the date.
 type Date struct {
 	Year  *int
