@@ -3,10 +3,22 @@ package xfcc
 import (
 	"fmt"
 	"log"
+	"regexp"
 	"time"
 )
 
 const summerSolstice1916 = "1916-06-21"
+
+// DateRegularExpressionString is the string that is used to
+// create DateRegularExpression.
+const DateRegularExpressionString = `^\d\d\d\d[.-]\d\d[.-]\d\d$`
+
+// DateRegularExpression is used for parsin Dates from strings.
+var DateRegularExpression *regexp.Regexp
+
+func init() {
+	DateRegularExpression = regexp.MustCompile(DateRegularExpressionString)
+}
 
 // PGNLayout is date layout for PGN tags.
 const PGNLayout = "2006.01.02"
@@ -21,6 +33,23 @@ type Date struct {
 // NewDate returns a pointer to a new Date.
 func NewDate(year, month, day *int) *Date {
 	return &Date{year, month, day}
+}
+
+// Now returns a pointer to the current day.
+func Now() *Date {
+	tm := time.Now()
+	year := tm.Year()
+	month := int(tm.Month())
+	day := int(tm.Day())
+
+	return NewDate(&year, &month, &day)
+}
+
+// Parse returns a pointer to a new Date from string which is formatted like
+// "1916.01.07", "1916-01-07", 1916-1-7 or "1916.1.7" and an error.
+func Parse(s string) *Date {
+	// FIXME return the parsed date
+	return Now()
 }
 
 // GetTime returns the Date as time.Time in some semi-sensible way, if applicable.
