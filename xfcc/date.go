@@ -11,7 +11,7 @@ const summerSolstice1916 = "1916-06-21"
 
 // DateRegularExpressionString is the string that is used to
 // create DateRegularExpression.
-const DateRegularExpressionString = `^\d\d\d\d[.-]\d\d[.-]\d\d$`
+const DateRegularExpressionString = `^(\d\d\d\d)[.-](\d\d)[.-](\d\d)$`
 
 // DateRegularExpression is used for parsin Dates from strings.
 var DateRegularExpression *regexp.Regexp
