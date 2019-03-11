@@ -23,6 +23,9 @@ func init() {
 // PGNLayout is date layout for PGN tags.
 const PGNLayout = "2006.01.02"
 
+// ISO8601Layout is date layout for ISO8601 standard.
+const ISO8601Layout = "2006-01-02"
+
 // Date models the date.
 type Date struct {
 	Year  *int
