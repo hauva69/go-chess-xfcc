@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"regexp"
+	"strconv"
 	"time"
 )
 
@@ -50,9 +51,32 @@ func Now() *Date {
 
 // Parse returns a pointer to a new Date from string which is formatted like
 // "1916.01.07", "1916-01-07", 1916-1-7 or "1916.1.7" and an error.
-func Parse(s string) *Date {
-	// FIXME return the parsed date
-	return Now()
+func Parse(s string) (*Date, error) {
+	groups := DateRegularExpression.FindAllStringSubmatch(s, -1)
+	if len(groups[0]) != 4 {
+		return nil, fmt.Errorf(
+			"parsing the date failed: %q does not match %q",
+			s,
+			DateRegularExpressionString,
+		)
+	}
+
+	year, err := strconv.Atoi(groups[0][1])
+	if err != nil {
+		return nil, err
+	}
+
+	month, err := strconv.Atoi(groups[0][2])
+	if err != nil {
+		return nil, err
+	}
+
+	day, err := strconv.Atoi(groups[0][3])
+	if err != nil {
+		return nil, err
+	}
+
+	return NewDate(&year, &month, &day), nil
 }
 
 // GetTime returns the Date as time.Time in some semi-sensible way, if applicable.

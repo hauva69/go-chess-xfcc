@@ -52,6 +52,10 @@ func TestDatePGNDateIsNil(t *testing.T) {
 }
 
 func TestParseFromPGN(t *testing.T) {
-	date := Parse(paulKeresWasBornInISO8601)
+	date, err := Parse(paulKeresWasBornInISO8601)
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	assert.Equal(t, paulKeresWasBornInPGN, date.PGN())
 }
