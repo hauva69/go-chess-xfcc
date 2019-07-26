@@ -28,6 +28,17 @@ func TestDatePGN(t *testing.T) {
 	assert.Equal(t, expected, d.PGN())
 }
 
+func TestParsePGNDate(t *testing.T) {
+	expectedYear := 1916
+	expectedMonth := 1
+	expectedDay := 7
+
+	d, _ := Parse(paulKeresWasBornInPGN)
+	assert.Equal(t, expectedYear, *d.Year)
+	assert.Equal(t, expectedMonth, *d.Month)
+	assert.Equal(t, expectedDay, *d.Day)
+}
+
 func TestParseUnParsableDate(t *testing.T) {
 	_, err := Parse("200-3-4")
 	if err == nil {
