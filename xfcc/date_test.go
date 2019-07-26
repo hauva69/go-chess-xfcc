@@ -14,6 +14,7 @@ const paulKeresWasBornInXFCC = "1916.1.7"
 
 const tigranPetrosianWasBornInPGN = "1929.06.17"
 const tigranPetrosianWasBornInISO8601 = "1929-06-17"
+const tigranPetrosianWasBornInXFCC = "1929.6.17"
 
 const joséRaoulCapablancaWasBornInPgn = "1888.11.19"
 const joséRaoulCapablancaWasBornInISO8601 = "1888-11-19"
@@ -25,6 +26,23 @@ func TestDatePGN(t *testing.T) {
 	mday := 7
 	d := NewDate(&year, &month, &mday)
 	assert.Equal(t, expected, d.PGN())
+}
+
+func TestParseUnParsableDate(t *testing.T) {
+	_, err := Parse("200-3-4")
+	if err == nil {
+		t.Fatal("parsing 200-3-4 must fail")
+	}
+}
+
+func TestParseNoMonthLeadingZero(t *testing.T) {
+	expected := tigranPetrosianWasBornInPGN
+	date, err := Parse(tigranPetrosianWasBornInXFCC)
+	if err != nil {
+		t.Fatalf("cannot parse %q: %s", tigranPetrosianWasBornInXFCC, err)
+	}
+
+	assert.Equal(t, expected, date.PGN())
 }
 
 func TestDatePGNYearIsNil(t *testing.T) {
