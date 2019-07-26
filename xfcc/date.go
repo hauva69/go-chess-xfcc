@@ -12,7 +12,7 @@ const summerSolstice1916 = "1916-06-21"
 
 // DateRegularExpressionString is the string that is used to
 // create DateRegularExpression.
-const DateRegularExpressionString = `^(\d\d\d\d)[.-](\d\d)[.-](\d\d)$`
+const DateRegularExpressionString = `^(\d\d\d\d)[.-](\d\d?)[.-](\d\d?)$`
 
 // DateRegularExpression is used for parsin Dates from strings.
 var DateRegularExpression *regexp.Regexp
@@ -53,7 +53,8 @@ func Now() *Date {
 // "1916.01.07", "1916-01-07", 1916-1-7 or "1916.1.7" and an error.
 func Parse(s string) (*Date, error) {
 	groups := DateRegularExpression.FindAllStringSubmatch(s, -1)
-	if len(groups[0]) != 4 {
+	log.Printf("parsing %q, got %+v", s, groups)
+	if len(groups) != 1 || len(groups[0]) != 4 {
 		return nil, fmt.Errorf(
 			"parsing the date failed: %q does not match %q",
 			s,
