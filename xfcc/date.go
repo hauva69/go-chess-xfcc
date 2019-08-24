@@ -53,7 +53,6 @@ func Now() *Date {
 // "1916.01.07", "1916-01-07", 1916-1-7 or "1916.1.7" and an error.
 func Parse(s string) (*Date, error) {
 	groups := DateRegularExpression.FindAllStringSubmatch(s, -1)
-	log.Printf("parsing %q, got %+v", s, groups)
 	if len(groups) != 1 || len(groups[0]) != 4 {
 		return nil, fmt.Errorf(
 			"parsing the date failed: %q does not match %q",
