@@ -100,6 +100,13 @@ func TestDatePGNYearAndMonthAreNil(t *testing.T) {
 	assert.Equal(t, expected, d.PGN())
 }
 
+func TestDatePGNYearAndDayAreNil(t *testing.T) {
+	month := 1
+	expected := "????.01.??"
+	d := NewDate(nil, &month, nil)
+	assert.Equal(t, expected, d.PGN())
+}
+
 func TestParseFromPGN(t *testing.T) {
 	date, err := Parse(paulKeresWasBornInPGN)
 	if err != nil {
