@@ -55,11 +55,11 @@ func (g *Game) PGN() (string, error) {
 			date.PGN(),
 			g.White,
 			g.Black,
-			g.Result,
+			g.Result.PGN(),
 			g.WhiteElo,
 			g.BlackElo,
 			g.Movetext.Wrap(),
-			g.Result,
+			g.Result.PGN(),
 		),
 		nil
 }
