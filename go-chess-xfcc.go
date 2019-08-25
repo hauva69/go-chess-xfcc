@@ -20,6 +20,12 @@ func main() {
 	}
 
 	for _, game := range games {
-		fmt.Println(game.PGN())
+		// TODO maybe --force option to bypass invalid data?
+		pgn, err := game.PGN()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Println(pgn)
 	}
 }

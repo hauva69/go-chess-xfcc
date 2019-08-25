@@ -45,19 +45,25 @@ type Game struct {
 }
 
 // PGN returns the game as a PGN string.
-func (g *Game) PGN() string {
+func (g *Game) PGN() (string, error) {
+	date, err := Parse(g.EventDate)
+	if err != nil {
+		return "", err
+	}
+
 	return fmt.Sprintf(
-		PGNTemplate,
-		g.Event,
-		g.Site,
-		g.EventDate,
-		g.White,
-		g.Black,
-		g.Result,
-		g.WhiteElo,
-		g.BlackElo,
-		g.Movetext.Wrap(),
-	)
+			PGNTemplate,
+			g.Event,
+			g.Site,
+			date.PGN(),
+			g.White,
+			g.Black,
+			g.Result,
+			g.WhiteElo,
+			g.BlackElo,
+			g.Movetext.Wrap(),
+		),
+		nil
 }
 
 // PGNTemplate is a template for  Portable Game Notation.
