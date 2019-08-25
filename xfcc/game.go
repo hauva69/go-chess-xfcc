@@ -12,9 +12,6 @@ import (
 // Player models a chess player.
 type Player string
 
-// Result models the result of the game.
-type Result string
-
 // MaximumMoveTextLength defines the maximum length of lines of the movetext of a game.
 const MaximumMoveTextLength = 78
 
