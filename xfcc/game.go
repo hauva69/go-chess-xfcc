@@ -62,6 +62,7 @@ func (g *Game) PGN() (string, error) {
 			g.WhiteElo,
 			g.BlackElo,
 			g.Movetext.Wrap(),
+			g.Result,
 		),
 		nil
 }
@@ -77,5 +78,5 @@ const PGNTemplate = `[Event "%s"]
 [WhiteElo "%d"]
 [BlackElo "%d"]
 
-%s
+%s %s
 `
