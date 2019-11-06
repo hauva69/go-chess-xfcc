@@ -22,7 +22,6 @@ import (
 	"encoding/xml"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 )
 
@@ -63,9 +62,6 @@ func GetMyGames(url, MIMEType, username, password string) ([]Game, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	// FIXME remove me when in production
-	log.Print(string(body))
 
 	var result Envelope
 	if err := xml.Unmarshal(body, &result); err != nil {
