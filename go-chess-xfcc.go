@@ -12,11 +12,21 @@ import (
 func main() {
 	usage := `Go-chess-xfcc.
 	
-	go-chess-xfcc
-	`
+	Usage:
+		go-chess-xfcc
+		go-chess-xfcc -h | --help
+		go-chess-xfcc --version
+  
+  	Options:
+		-h --help     Show this screen.
+		--version     Show version
+`
 
 	arguments, err := docopt.Parse(usage, nil, true, "go-chess-xfcc 0.1", false)
 	log.Printf("arguments=%+v", arguments)
+	if err != nil {
+		log.Fatalf("unable to parse arguments: %s", err)
+	}
 
 	config, err := configuration.GetConfiguration()
 	if err != nil {
