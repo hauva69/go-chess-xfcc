@@ -1,5 +1,7 @@
 # github.com/davecgh/go-spew v1.1.0
 github.com/davecgh/go-spew/spew
+# github.com/docopt/docopt-go v0.0.0-20180111231733-ee0de3bc6815
+github.com/docopt/docopt-go
 # github.com/eidolon/wordwrap v0.0.0-20161011182207-e0f54129b8bb
 github.com/eidolon/wordwrap
 # github.com/pmezard/go-difflib v1.0.0
