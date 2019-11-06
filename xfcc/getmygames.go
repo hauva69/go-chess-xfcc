@@ -49,8 +49,8 @@ type GetMyGamesResult struct {
 	Games   []Game   `xml:"XfccGame"`
 }
 
-// GetMyGames returns your games.
-func GetMyGames(url, MIMEType, username, password string) ([]Game, error) {
+// GetMyGamesXML returns the XML of your games.
+func GetMyGamesXML(url, MIMEType, username, password string) ([]byte, error) {
 	data := fmt.Sprintf(GetMyGamesSOAPXML, username, password)
 	buffer := bytes.NewBufferString(data)
 	resp, err := http.Post(url, MIMEType, buffer)
@@ -63,8 +63,18 @@ func GetMyGames(url, MIMEType, username, password string) ([]Game, error) {
 		return nil, err
 	}
 
+	return body, nil
+}
+
+// GetMyGames returns your games.
+func GetMyGames(url, MIMEType, username, password string) ([]Game, error) {
+	body, err := GetMyGamesXML(url, MIMEType, username, password)
+	if err != nil {
+		return nil, err
+	}
+
 	var result Envelope
-	if err := xml.Unmarshal(body, &result); err != nil {
+	if err = xml.Unmarshal(body, &result); err != nil {
 		return nil, err
 	}
 
