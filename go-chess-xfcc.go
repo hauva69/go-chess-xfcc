@@ -14,6 +14,7 @@ func main() {
 	
 	Usage:
 		go-chess-xfcc
+		go-chess-xfcc fetch
 		go-chess-xfcc -h | --help
 		go-chess-xfcc --version
   
@@ -33,18 +34,27 @@ func main() {
 		log.Fatal(err)
 	}
 
-	games, err := xfcc.GetMyGames(xfcc.ICCFBaseURL, xfcc.ICCFSOAPMIMEType, config.User, config.Password)
-	if err != nil {
-		log.Fatal(err)
-	}
+	if arguments["fetch"].(bool) {
+		body, err := xfcc.GetMyGamesXML(xfcc.ICCFBaseURL, xfcc.ICCFSOAPMIMEType, config.User, config.Password)
+		if err != nil {
+			log.Fatalf("unable to get the XFCC XML: %s", err)
+		}
 
-	for _, game := range games {
-		// TODO maybe --force option to bypass invalid data?
-		pgn, err := game.PGN()
+		fmt.Print(string(body))
+	} else {
+		games, err := xfcc.GetMyGames(xfcc.ICCFBaseURL, xfcc.ICCFSOAPMIMEType, config.User, config.Password)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		fmt.Println(pgn)
+		for _, game := range games {
+			// TODO maybe --force option to bypass invalid data?
+			pgn, err := game.PGN()
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			fmt.Println(pgn)
+		}
 	}
 }
