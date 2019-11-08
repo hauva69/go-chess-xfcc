@@ -7,8 +7,8 @@ import (
 	"text/tabwriter"
 
 	"github.com/docopt/docopt-go"
+	xfcc "github.com/hauva69/go-chess-xfcc"
 	"github.com/hauva69/go-chess-xfcc/configuration"
-	"github.com/hauva69/go-chess-xfcc/xfcc"
 )
 
 func main() {

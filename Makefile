@@ -1,6 +1,6 @@
 build:
-	go build -mod=vendor
+	$(MAKE) -C bin/
 
 test:
-	cd xfcc && go test -race
+	go test -race
 	
