@@ -27,18 +27,20 @@ func (mt *Movetext) Wrap() string {
 
 // Game models a correspondence chess game.
 type Game struct {
-	XMLName   xml.Name `xml:"XfccGame"`
-	ID        uint64   `xml:"id"`
-	Event     string   `xml:"event"`
-	Site      string   `xml:"site"`
-	Date      string   `xml:"date"`
-	EventDate string   `xml:"eventDate"`
-	White     Player   `xml:"white"`
-	Black     Player   `xml:"black"`
-	Result    Result   `xml:"result"`
-	Movetext  Movetext `xml:"moves"`
-	WhiteElo  int      `xml:"whiteElo"`
-	BlackElo  int      `xml:"blackElo"`
+	XMLName     xml.Name `xml:"XfccGame"`
+	ID          uint64   `xml:"id"`
+	Event       string   `xml:"event"`
+	Site        string   `xml:"site"`
+	Date        string   `xml:"date"`
+	EventDate   string   `xml:"eventDate"`
+	White       Player   `xml:"white"`
+	Black       Player   `xml:"black"`
+	Result      Result   `xml:"result"`
+	Movetext    Movetext `xml:"moves"`
+	WhiteElo    int      `xml:"whiteElo"`
+	BlackElo    int      `xml:"blackElo"`
+	DrawOffered bool     `xml:"drawOffered"`
+	MyTurn      bool     `xml:"myTurn"`
 }
 
 // PGN returns the game as a PGN string.

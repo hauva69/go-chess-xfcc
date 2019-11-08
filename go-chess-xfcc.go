@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
+	"text/tabwriter"
 
 	"github.com/docopt/docopt-go"
 	"github.com/hauva69/go-chess-xfcc/configuration"
@@ -15,6 +17,7 @@ func main() {
 	Usage:
 		go-chess-xfcc
 		go-chess-xfcc fetch
+		go-chess-xfcc list [--myturn]
 		go-chess-xfcc -h | --help
 		go-chess-xfcc --version
   
@@ -24,7 +27,6 @@ func main() {
 `
 
 	arguments, err := docopt.Parse(usage, nil, true, "go-chess-xfcc 0.1", false)
-	log.Printf("arguments=%+v", arguments)
 	if err != nil {
 		log.Fatalf("unable to parse arguments: %s", err)
 	}
@@ -41,6 +43,8 @@ func main() {
 		}
 
 		fmt.Print(string(body))
+	} else if arguments["list"].(bool) {
+		list(config, arguments["--myturn"].(bool))
 	} else {
 		games, err := xfcc.GetMyGames(xfcc.ICCFBaseURL, xfcc.ICCFSOAPMIMEType, config.User, config.Password)
 		if err != nil {
@@ -57,4 +61,31 @@ func main() {
 			fmt.Println(pgn)
 		}
 	}
+}
+
+func list(config configuration.Configuration, myTurn bool) {
+	games, err := xfcc.GetMyGames(xfcc.ICCFBaseURL, xfcc.ICCFSOAPMIMEType, config.User, config.Password)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', 0)
+	for _, game := range games {
+		if !myTurn || (myTurn && game.MyTurn) {
+			drawOffered := "–"
+			if game.DrawOffered {
+				drawOffered = "draw offered"
+			}
+
+			fmt.Fprintln(w, fmt.Sprintf(
+				"%s\t%s\t%s\t%s",
+				game.White,
+				game.Black,
+				game.Event,
+				drawOffered,
+			))
+		}
+	}
+
+	w.Flush()
 }
