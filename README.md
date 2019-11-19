@@ -21,6 +21,6 @@ and a file named `go-chess-xfcc.xml` with contents:
 
 ## ICCF
 
-[International Correspondence Chess Federeation](https://www.iccf.com/) supports XFCC. For practical examples see
+[International Correspondence Chess Federation](https://www.iccf.com/) supports XFCC. For practical examples see
 
 - [https://www.iccf.com/xfccbasic.asmx](https://www.iccf.com/xfccbasic.asmx)
