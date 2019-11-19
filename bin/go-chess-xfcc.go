@@ -95,7 +95,7 @@ func list(config configuration.Configuration, myTurn bool) {
 
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', 0)
 	for _, game := range games {
-		if !myTurn || (myTurn && game.MyTurn) {
+		if game.Result != "Draw" && (!myTurn || (myTurn == game.MyTurn)) {
 			drawOffered := "–"
 			if game.DrawOffered {
 				drawOffered = "draw offered"
