@@ -17,6 +17,7 @@ func main() {
 	
 	Usage:
 		go-chess-xfcc
+		go-chess-xfcc endgame
 		go-chess-xfcc fetch
 		go-chess-xfcc fen [--myturn]
 		go-chess-xfcc list [--myturn]
@@ -38,7 +39,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if arguments["fetch"].(bool) {
+	if arguments["endgame"].(bool) {
+		endgame(config)
+	} else if arguments["fetch"].(bool) {
 		body, err := xfcc.GetMyGamesXML(xfcc.ICCFBaseURL, xfcc.ICCFSOAPMIMEType, config.User, config.Password)
 		if err != nil {
 			log.Fatalf("unable to get the XFCC XML: %s", err)
@@ -63,6 +66,19 @@ func main() {
 			}
 
 			fmt.Println(pgn)
+		}
+	}
+}
+
+func endgame(config configuration.Configuration) {
+	games, err := xfcc.GetMyGames(xfcc.ICCFBaseURL, xfcc.ICCFSOAPMIMEType, config.User, config.Password)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, game := range games {
+		if game.Result != "Draw" {
+			fmt.Println(pgn.EndGameResult(game))
 		}
 	}
 }
