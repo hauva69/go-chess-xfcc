@@ -27,3 +27,13 @@ func FEN(pgn string) (string, error) {
 
 	return game.FEN(), nil
 }
+
+// PieceCount returns the number of pieces on the board.
+func PieceCount(pgn string) (int, error) {
+	game, err := Game(pgn)
+	if err != nil {
+		return -1, err
+	}
+
+	return len(game.Position().Board().SquareMap()), nil
+}
