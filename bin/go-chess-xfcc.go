@@ -74,13 +74,13 @@ func fen(config configuration.Configuration, myTurn bool) {
 	}
 
 	for _, game := range games {
-		s, _ := game.PGN()
-		fen, err := pgn.FEN(s)
-		if err != nil {
-			log.Fatal(err)
-		}
-
 		if game.Result != "Draw" && (!myTurn || (myTurn == game.MyTurn)) {
+			s, _ := game.PGN()
+			fen, err := pgn.FEN(s)
+			if err != nil {
+				log.Fatal(err)
+			}
+
 			fmt.Printf("%s – %s\n%s\n", game.White, game.Black, fen)
 		}
 	}
