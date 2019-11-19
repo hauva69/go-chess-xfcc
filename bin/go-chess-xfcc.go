@@ -82,7 +82,6 @@ func fen(config configuration.Configuration, myTurn bool) {
 
 		if game.Result != "Draw" && (!myTurn || (myTurn == game.MyTurn)) {
 			fmt.Printf("%s – %s\n%s\n", game.White, game.Black, fen)
-			fmt.Println(game.Result)
 		}
 	}
 }
