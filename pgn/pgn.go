@@ -52,17 +52,16 @@ func EndGameResult(game xfcc.Game) bool {
 		log.Fatal(err)
 	}
 
-	/*
-		count, err := PieceCount(pgn)
-		if err != nil {
-			log.Fatal(err)
-		}
-		// FIXME replace the magic number
+	count, err := PieceCount(pgn)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-			if count > 7 {
-				return false
-			}
-	*/
+	// FIXME replace the magic number
+	if count > 7 {
+		log.Printf("number of pieces is %d, no table bases exist", count)
+		return false
+	}
 
 	tmpGame, err := Game(pgn)
 	if err != nil {
