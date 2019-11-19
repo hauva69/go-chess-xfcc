@@ -4,6 +4,8 @@ github.com/docopt/docopt-go v0.0.0-20180111231733-ee0de3bc6815 h1:bWDMxwH3px2JBh
 github.com/docopt/docopt-go v0.0.0-20180111231733-ee0de3bc6815/go.mod h1:WwZ+bS3ebgob9U8Nd0kOddGdZWjyMGR8Wziv+TBNwSE=
 github.com/eidolon/wordwrap v0.0.0-20161011182207-e0f54129b8bb h1:ioQwBmKdOCpMVS/bDaESqNWXIE/aw4+gsVtysCGMWZ4=
 github.com/eidolon/wordwrap v0.0.0-20161011182207-e0f54129b8bb/go.mod h1:ZAPs+OyRzeVJFGvXVDVffgCzQfjg3qU9Ig8G/MU3zZ4=
+github.com/notnil/chess v0.0.0-20191006020310-e7f43cbaaded h1:V+9WIirKG0PSgZ6DTPIfUex3qkob33iZaMSPj7CDxFU=
+github.com/notnil/chess v0.0.0-20191006020310-e7f43cbaaded/go.mod h1:Yu0kMeugIBDf7tmefiwvk+/DabQ5AzQwKUM5Kjt26iQ=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
