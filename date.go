@@ -2,7 +2,6 @@ package xfcc
 
 import (
 	"fmt"
-	"log"
 	"regexp"
 	"strconv"
 	"time"
@@ -88,14 +87,17 @@ func Parse(s string) (*Date, error) {
 	return NewDate(year, month, day), nil
 }
 
-// GetTime returns the Date as time.Time in some semi-sensible way, if applicable.
-// Summer solstice of certain, fixed year might be a reasonable option.
-func (d *Date) GetTime() (time.Time, error) {
-	layout := "2006.01.02"
-	log.Fatalf("implement me: %s", layout)
+// Time returns the Date as time.Time in some semi-sensible way, if applicable.
+func (d *Date) Time() (tm time.Time, err error) {
+	if nil == d.Year {
+		return tm, fmt.Errorf("the year of PGN date %q is nil", d)
+	} else if nil == d.Month {
+		return tm, fmt.Errorf("the month of PGN date %q is nil", d)
+	} else if nil == d.Day {
+		return tm, fmt.Errorf("the day of PGN date %q is nil", d)
+	}
 
-	// FIXME
-	return time.Now(), nil
+	return time.Date(*d.Year, time.Month(*d.Month), *d.Day, 0, 0, 0, 0, time.UTC), nil
 }
 
 // PGN returns the date in PGN format.
@@ -119,4 +121,9 @@ func (d *Date) PGN() string {
 	}
 
 	return s
+}
+
+// String implements the Stringer interface
+func (d Date) String() string {
+	return d.PGN()
 }
