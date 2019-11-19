@@ -24,3 +24,7 @@ and a file named `go-chess-xfcc.xml` with contents:
 [International Correspondence Chess Federation](https://www.iccf.com/) supports XFCC. For practical examples see
 
 - [https://www.iccf.com/xfccbasic.asmx](https://www.iccf.com/xfccbasic.asmx)
+
+## Lichess API
+
+- [Lichess API Introduction](https://lichess.org/api#section/Introduction)
