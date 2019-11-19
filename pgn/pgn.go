@@ -4,6 +4,7 @@ import (
 	"log"
 	"strings"
 
+	xfcc "github.com/hauva69/go-chess-xfcc"
 	"github.com/notnil/chess"
 )
 
@@ -36,4 +37,31 @@ func PieceCount(pgn string) (int, error) {
 	}
 
 	return len(game.Position().Board().SquareMap()), nil
+}
+
+// EndGameResult returns true if the position is won in endgame tablebases.
+func EndGameResult(game xfcc.Game) bool {
+	pgn, err := game.PGN()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	count, err := PieceCount(pgn)
+	if err != nil {
+		log.Fatal(err)
+	}
+	// FIXME replace the magic number
+	if count > 7 {
+		return false
+	}
+
+	tmpGame, err := Game(pgn)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	tmpGame.Position().Board().Draw()
+
+	// FIXME
+	return false
 }
