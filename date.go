@@ -12,7 +12,7 @@ const summerSolstice1916 = "1916-06-21"
 
 // DateRegularExpressionString is the string that is used to
 // create DateRegularExpression.
-const DateRegularExpressionString = `^(\d\d\d\d)[.-](\d\d?)[.-](\d\d?)$`
+const DateRegularExpressionString = `^(\d\d\d\d|\?\?\?\?)[.-](\d\d?|\?\?)[.-](\d\d?|\?\?)$`
 
 // DateRegularExpression is used for parsin Dates from strings.
 var DateRegularExpression *regexp.Regexp
@@ -61,22 +61,31 @@ func Parse(s string) (*Date, error) {
 		)
 	}
 
-	year, err := strconv.Atoi(groups[0][1])
+	var year *int
+	tmpYear, err := strconv.Atoi(groups[0][1])
 	if err != nil {
-		return nil, err
+		year = nil
+	} else {
+		year = &tmpYear
 	}
 
-	month, err := strconv.Atoi(groups[0][2])
+	var month *int
+	tmpMonth, err := strconv.Atoi(groups[0][2])
 	if err != nil {
-		return nil, err
+		month = nil
+	} else {
+		month = &tmpMonth
 	}
 
-	day, err := strconv.Atoi(groups[0][3])
+	var day *int
+	tmpDay, err := strconv.Atoi(groups[0][3])
 	if err != nil {
-		return nil, err
+		day = nil
+	} else {
+		day = &tmpDay
 	}
 
-	return NewDate(&year, &month, &day), nil
+	return NewDate(year, month, day), nil
 }
 
 // GetTime returns the Date as time.Time in some semi-sensible way, if applicable.

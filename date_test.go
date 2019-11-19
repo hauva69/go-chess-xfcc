@@ -1,6 +1,7 @@
 package xfcc
 
 import (
+	"log"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -114,6 +115,36 @@ func TestParseFromPGN(t *testing.T) {
 	}
 
 	assert.Equal(t, paulKeresWasBornInPGN, date.PGN())
+}
+
+func TestParseFromPGNYearIsNil(t *testing.T) {
+	expected := "????.01.10"
+	date, err := Parse(expected)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	assert.Equal(t, expected, date.PGN())
+}
+
+func TestParseFromPGNMonthIsNil(t *testing.T) {
+	expected := "1916.??.07"
+	date, err := Parse(expected)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	assert.Equal(t, expected, date.PGN())
+}
+
+func TestParseFromPGNDayIsNil(t *testing.T) {
+	expected := "1916.01.??"
+	date, err := Parse(expected)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	assert.Equal(t, expected, date.PGN())
 }
 
 func TestParseFromISO8601(t *testing.T) {
