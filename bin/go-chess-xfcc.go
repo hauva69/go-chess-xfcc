@@ -76,8 +76,11 @@ func endgame(config configuration.Configuration) {
 		log.Fatal(err)
 	}
 
+	games = append(games, xfcc.Game{Movetext: xfcc.FewPiecesGame1, Date: "2019.04.10", EventDate: "2019.04.10"})
+	games = append(games, xfcc.Game{Movetext: xfcc.FewPiecesGame2, Date: "2018.10.01", EventDate: "2018.10.01"})
+
 	for _, game := range games {
-		if game.Result != "Draw" {
+		if game.Result != "Draw" { // && game.MyTurn {
 			fmt.Println(pgn.EndGameResult(game))
 		}
 	}
