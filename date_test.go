@@ -1,7 +1,9 @@
 package xfcc
 
 import (
+	"log"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -116,6 +118,36 @@ func TestParseFromPGN(t *testing.T) {
 	assert.Equal(t, paulKeresWasBornInPGN, date.PGN())
 }
 
+func TestParseFromPGNYearIsNil(t *testing.T) {
+	expected := "????.01.10"
+	date, err := Parse(expected)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	assert.Equal(t, expected, date.PGN())
+}
+
+func TestParseFromPGNMonthIsNil(t *testing.T) {
+	expected := "1916.??.07"
+	date, err := Parse(expected)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	assert.Equal(t, expected, date.PGN())
+}
+
+func TestParseFromPGNDayIsNil(t *testing.T) {
+	expected := "1916.01.??"
+	date, err := Parse(expected)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	assert.Equal(t, expected, date.PGN())
+}
+
 func TestParseFromISO8601(t *testing.T) {
 	date, err := Parse(paulKeresWasBornInISO8601)
 	if err != nil {
@@ -123,4 +155,40 @@ func TestParseFromISO8601(t *testing.T) {
 	}
 
 	assert.Equal(t, paulKeresWasBornInPGN, date.PGN())
+}
+
+func TestTime(t *testing.T) {
+	paulKeresWasBornIn := time.Date(1916, time.January, 7, 0, 0, 0, 0, time.UTC)
+	date, err := Parse(paulKeresWasBornInPGN)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	tmp, err := date.Time()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	assert.True(t, paulKeresWasBornIn.Equal(tmp))
+}
+
+func TestTimeYearIsUnknown(t *testing.T) {
+	expected := "the year of PGN date \"????.01.07\" is nil"
+	date, _ := Parse("????.01.07")
+	_, err := date.Time()
+	assert.Equal(t, expected, err.Error())
+}
+
+func TestTimeMonthIsUnknown(t *testing.T) {
+	expected := "the month of PGN date \"1916.??.07\" is nil"
+	date, _ := Parse("1916.??.07")
+	_, err := date.Time()
+	assert.Equal(t, expected, err.Error())
+}
+
+func TestTimeDayIsUnknown(t *testing.T) {
+	expected := "the day of PGN date \"1916.01.??\" is nil"
+	date, _ := Parse("1916.01.??")
+	_, err := date.Time()
+	assert.Equal(t, expected, err.Error())
 }

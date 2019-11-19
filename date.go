@@ -2,7 +2,6 @@ package xfcc
 
 import (
 	"fmt"
-	"log"
 	"regexp"
 	"strconv"
 	"time"
@@ -12,7 +11,7 @@ const summerSolstice1916 = "1916-06-21"
 
 // DateRegularExpressionString is the string that is used to
 // create DateRegularExpression.
-const DateRegularExpressionString = `^(\d\d\d\d)[.-](\d\d?)[.-](\d\d?)$`
+const DateRegularExpressionString = `^(\d\d\d\d|\?\?\?\?)[.-](\d\d?|\?\?)[.-](\d\d?|\?\?)$`
 
 // DateRegularExpression is used for parsin Dates from strings.
 var DateRegularExpression *regexp.Regexp
@@ -61,32 +60,44 @@ func Parse(s string) (*Date, error) {
 		)
 	}
 
-	year, err := strconv.Atoi(groups[0][1])
+	var year *int
+	tmpYear, err := strconv.Atoi(groups[0][1])
 	if err != nil {
-		return nil, err
+		year = nil
+	} else {
+		year = &tmpYear
 	}
 
-	month, err := strconv.Atoi(groups[0][2])
+	var month *int
+	tmpMonth, err := strconv.Atoi(groups[0][2])
 	if err != nil {
-		return nil, err
+		month = nil
+	} else {
+		month = &tmpMonth
 	}
 
-	day, err := strconv.Atoi(groups[0][3])
+	var day *int
+	tmpDay, err := strconv.Atoi(groups[0][3])
 	if err != nil {
-		return nil, err
+		day = nil
+	} else {
+		day = &tmpDay
 	}
 
-	return NewDate(&year, &month, &day), nil
+	return NewDate(year, month, day), nil
 }
 
-// GetTime returns the Date as time.Time in some semi-sensible way, if applicable.
-// Summer solstice of certain, fixed year might be a reasonable option.
-func (d *Date) GetTime() (time.Time, error) {
-	layout := "2006.01.02"
-	log.Fatalf("implement me: %s", layout)
+// Time returns the Date as time.Time in some semi-sensible way, if applicable.
+func (d *Date) Time() (tm time.Time, err error) {
+	if nil == d.Year {
+		return tm, fmt.Errorf("the year of PGN date %q is nil", d)
+	} else if nil == d.Month {
+		return tm, fmt.Errorf("the month of PGN date %q is nil", d)
+	} else if nil == d.Day {
+		return tm, fmt.Errorf("the day of PGN date %q is nil", d)
+	}
 
-	// FIXME
-	return time.Now(), nil
+	return time.Date(*d.Year, time.Month(*d.Month), *d.Day, 0, 0, 0, 0, time.UTC), nil
 }
 
 // PGN returns the date in PGN format.
@@ -110,4 +121,9 @@ func (d *Date) PGN() string {
 	}
 
 	return s
+}
+
+// String implements the Stringer interface
+func (d Date) String() string {
+	return d.PGN()
 }

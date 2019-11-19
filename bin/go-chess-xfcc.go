@@ -9,6 +9,7 @@ import (
 	"github.com/docopt/docopt-go"
 	xfcc "github.com/hauva69/go-chess-xfcc"
 	"github.com/hauva69/go-chess-xfcc/configuration"
+	"github.com/hauva69/go-chess-xfcc/pgn"
 )
 
 func main() {
@@ -17,6 +18,7 @@ func main() {
 	Usage:
 		go-chess-xfcc
 		go-chess-xfcc fetch
+		go-chess-xfcc fen [--myturn]
 		go-chess-xfcc list [--myturn]
 		go-chess-xfcc -h | --help
 		go-chess-xfcc --version
@@ -45,6 +47,8 @@ func main() {
 		fmt.Print(string(body))
 	} else if arguments["list"].(bool) {
 		list(config, arguments["--myturn"].(bool))
+	} else if arguments["fen"].(bool) {
+		fen(config, arguments["--myturn"].(bool))
 	} else {
 		games, err := xfcc.GetMyGames(xfcc.ICCFBaseURL, xfcc.ICCFSOAPMIMEType, config.User, config.Password)
 		if err != nil {
@@ -63,6 +67,25 @@ func main() {
 	}
 }
 
+func fen(config configuration.Configuration, myTurn bool) {
+	games, err := xfcc.GetMyGames(xfcc.ICCFBaseURL, xfcc.ICCFSOAPMIMEType, config.User, config.Password)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, game := range games {
+		s, _ := game.PGN()
+		fen, err := pgn.FEN(s)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if game.Result != "Draw" && (!myTurn || (myTurn == game.MyTurn)) {
+			fmt.Printf("%s – %s\n%s\n", game.White, game.Black, fen)
+		}
+	}
+}
+
 func list(config configuration.Configuration, myTurn bool) {
 	games, err := xfcc.GetMyGames(xfcc.ICCFBaseURL, xfcc.ICCFSOAPMIMEType, config.User, config.Password)
 	if err != nil {
@@ -71,7 +94,7 @@ func list(config configuration.Configuration, myTurn bool) {
 
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', 0)
 	for _, game := range games {
-		if !myTurn || (myTurn && game.MyTurn) {
+		if game.Result != "Draw" && (!myTurn || (myTurn == game.MyTurn)) {
 			drawOffered := "–"
 			if game.DrawOffered {
 				drawOffered = "draw offered"
