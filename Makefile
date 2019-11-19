@@ -2,5 +2,5 @@ build:
 	$(MAKE) -C bin/
 
 test:
-	go test -race
+	go test -race ./...
 	
