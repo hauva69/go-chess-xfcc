@@ -1,6 +1,7 @@
 package pgn
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -10,6 +11,11 @@ import (
 
 	xfcc "github.com/hauva69/go-chess-xfcc"
 )
+
+type lichessResult struct {
+	Mainline string `json:"mainline"`
+	Winner   string `json:"winner"`
+}
 
 // EndGameResult returns true if the position is won in endgame tablebases.
 // FIXME no fatals in a library!
@@ -66,6 +72,11 @@ func EndGameResult(game xfcc.Game) bool {
 
 	log.Printf("BODY=%s", string(body))
 	tmpGame.Position().Board().Draw()
+	var result lichessResult
+	err = json.Unmarshal(body, &result)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	// FIXME
 	return false
