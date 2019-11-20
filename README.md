@@ -25,7 +25,11 @@ and a file named `go-chess-xfcc.xml` with contents:
 
 - [https://www.iccf.com/xfccbasic.asmx](https://www.iccf.com/xfccbasic.asmx)
 
-## Lichess API
+## Syzygy tables
+
+- [Syzygy endgame tablebases](https://syzygy-tables.info/)
+
+### Lichess API
 
 - [Lichess API Introduction](https://lichess.org/api#section/Introduction)
   - [Tablebase server for lichess.org](https://github.com/niklasf/lila-tablebase)
