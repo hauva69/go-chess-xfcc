@@ -28,3 +28,5 @@ and a file named `go-chess-xfcc.xml` with contents:
 ## Lichess API
 
 - [Lichess API Introduction](https://lichess.org/api#section/Introduction)
+  - [Tablebase server for lichess.org](https://github.com/niklasf/lila-tablebase)
+  - [7-piece Syzygy tablebases are complete](https://lichess.org/blog/W3WeMyQAACQAdfAL/7-piece-syzygy-tablebases-are-complete)
