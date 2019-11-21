@@ -13,8 +13,13 @@ import (
 )
 
 type lichessResult struct {
-	Mainline string `json:"mainline"`
+	Mainline []move `json:"mainline"`
 	Winner   string `json:"winner"`
+}
+
+type move struct {
+	UCI string `json:"uci"`
+	DTZ int    `json:"dtz"`
 }
 
 // EndGameResult returns true if the position is won in endgame tablebases.
