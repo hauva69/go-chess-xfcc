@@ -22,9 +22,26 @@ type move struct {
 	DTZ int    `json:"dtz"`
 }
 
+const (
+	// Loss is a loss according to the Syzygy table bases.
+	Loss = (-2 + iota)
+	// BlessedLoss is a blessed loss according to the Syzygy table bases.
+	BlessedLoss
+	// Draw is a draw according to the Syzygy table bases.
+	Draw
+	// CursedWin is a cursed win according to the Syzygy table bases.
+	CursedWin
+	// Win is a win according to the Syzygy table bases.
+	Win
+	// Unknown is for an unknown result.
+	Unknown
+)
+
 // EndGameResult returns true if the position is won in endgame tablebases.
 // FIXME no fatals in a library!
 // FIXME move this to a separate library
+// FIXME return an integer (constants)
+// (2) win, (1) cursed win, (0) draw, (-1) blessed loss, (-2) loss, (null) unknown
 func EndGameResult(game xfcc.Game) bool {
 	pgn, err := game.PGN()
 	if err != nil {

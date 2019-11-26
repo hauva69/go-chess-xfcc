@@ -1,5 +1,36 @@
 package pgn
 
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
+
+func TestWin(t *testing.T) {
+	const expected = 2
+	assert.Equal(t, expected, Win)
+}
+
+func TestCursedWin(t *testing.T) {
+	const expected = 1
+	assert.Equal(t, expected, CursedWin)
+}
+
+func TestDraw(t *testing.T) {
+	const expected = 0
+	assert.Equal(t, expected, Draw)
+}
+
+func TestBlessedLoss(t *testing.T) {
+	const expected = -1
+	assert.Equal(t, expected, BlessedLoss)
+}
+
+func TestLoss(t *testing.T) {
+	const expected = -2
+	assert.Equal(t, expected, Loss)
+}
+
 // FIXME better name
 const game1JSON = `
 {
