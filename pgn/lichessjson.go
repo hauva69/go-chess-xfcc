@@ -36,6 +36,10 @@ const (
 	Win
 	// Unknown is for an unknown result.
 	Unknown
+	// WhiteWin White wins.
+	WhiteWin
+	// BlackWin Black wins.
+	BlackWin
 )
 
 // EndGameResult returns Win, Curse.
