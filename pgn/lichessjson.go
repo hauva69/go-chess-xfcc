@@ -75,7 +75,6 @@ func EndGameResult(game xfcc.Game) (int, error) {
 
 	fen = strings.ReplaceAll(fen, " ", "_")
 	url := fmt.Sprintf("http://tablebase.lichess.ovh/standard/mainline?fen=%s", fen)
-	log.Printf("URL=%s\n", url)
 	resp, err := http.Get(url)
 	if err != nil {
 		return Unknown, err
@@ -96,7 +95,6 @@ func EndGameResult(game xfcc.Game) (int, error) {
 		return Unknown, errors.New(msg)
 	}
 
-	log.Printf("BODY=%s", string(body))
 	tmpGame.Position().Board().Draw()
 	var result lichessResult
 	err = json.Unmarshal(body, &result)
