@@ -1,5 +1,7 @@
 package pgn
 
+// TODO make an interface for resolving endgames and implement using local tables.
+
 import (
 	"encoding/json"
 	"errors"
