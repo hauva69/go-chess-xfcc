@@ -49,7 +49,9 @@ const (
 // EndGameResult returns Win, Curse.
 // FIXME move this to a separate library
 // FIXME return an integer (constants)
+// FIXME implement using both standard and standard/mainline endpoints
 // (2) win, (1) cursed win, (0) draw, (-1) blessed loss, (-2) loss, (null) unknown
+// WhiteWin, BlackWin
 func EndGameResult(game xfcc.Game) (int, error) {
 	pgn, err := game.PGN()
 	if err != nil {
