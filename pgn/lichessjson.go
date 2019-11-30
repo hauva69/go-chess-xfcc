@@ -10,6 +10,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/notnil/chess"
+
 	xfcc "github.com/hauva69/go-chess-xfcc"
 )
 
@@ -53,7 +55,7 @@ const (
 // FIXME move this to a separate library
 // FIXME implement using both standard and standard/mainline endpoints
 // (2) win, (1) cursed win, (0) draw, (-1) blessed loss, (-2) loss, (null) unknown
-// WhiteWin, BlackWin
+// WhiteWin, BlackWin, Unknown
 func EndGameResult(game xfcc.Game) (int, error) {
 	pgn, err := game.PGN()
 	if err != nil {
@@ -80,6 +82,12 @@ func EndGameResult(game xfcc.Game) (int, error) {
 		return Unknown, err
 	}
 
+	return EndGameResultFromFEN(tmpGame, fen)
+}
+
+// EndGameResultFromFEN returns the result of the position as a constant and 
+// an error. Possible return values are WhiteWin, BlackWin and Unknown.
+func EndGameResultFromFEN(game *chess.Game, fen string) (int, error) {
 	fen = strings.ReplaceAll(fen, " ", "_")
 	url := fmt.Sprintf("%s=%s", mainlineURL, fen)
 	resp, err := http.Get(url)
@@ -102,7 +110,7 @@ func EndGameResult(game xfcc.Game) (int, error) {
 		return Unknown, errors.New(msg)
 	}
 
-	tmpGame.Position().Board().Draw()
+	game.Position().Board().Draw()
 	var result lichessResult
 	err = json.Unmarshal(body, &result)
 	if err != nil {
