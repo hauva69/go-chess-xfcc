@@ -77,8 +77,10 @@ func endgame(config configuration.Configuration) {
 		log.Fatal(err)
 	}
 
+	w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', 0)
+
 	for _, game := range games {
-		if game.Result != "Draw" { // && game.MyTurn {
+		if game.Result == "Ongoing" {
 			result, err := pgn.EndGameResult(game)
 			s := "*"
 			if err != nil && !strings.Contains(err.Error(), "no table bases exist") {
@@ -90,10 +92,12 @@ func endgame(config configuration.Configuration) {
 			} else if result == pgn.BlackWin {
 				s = "0-1"
 			}
-
-			fmt.Printf("%s – %s\t%s\n", game.White, game.Black, s)
+			fmt.Fprintln(w,
+				fmt.Sprintf("%s – %s\t%s", game.White, game.Black, s))
 		}
 	}
+
+	w.Flush()
 }
 
 func fen(config configuration.Configuration, myTurn bool) {
@@ -102,17 +106,26 @@ func fen(config configuration.Configuration, myTurn bool) {
 		log.Fatal(err)
 	}
 
+	w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', 0)
+
 	for _, game := range games {
-		if game.Result != "Draw" && (!myTurn || (myTurn == game.MyTurn)) {
+		if game.Result == "Ongoing" && (!myTurn || (myTurn == game.MyTurn)) {
 			s, _ := game.PGN()
 			fen, err := pgn.FEN(s)
 			if err != nil {
 				log.Fatal(err)
 			}
 
-			fmt.Printf("%s – %s\n%s\n", game.White, game.Black, fen)
+			fmt.Fprintln(w, fmt.Sprintf(
+				"%s – %s\t%s", 
+				game.White, 
+				game.Black, 
+				fen,
+			))
 		}
 	}
+
+	w.Flush()
 }
 
 func list(config configuration.Configuration, myTurn bool) {
@@ -123,7 +136,7 @@ func list(config configuration.Configuration, myTurn bool) {
 
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', 0)
 	for _, game := range games {
-		if game.Result != "Draw" && (!myTurn || (myTurn == game.MyTurn)) {
+		if game.Result == "Ongoing" && (!myTurn || (myTurn == game.MyTurn)) {
 			drawOffered := "–"
 			if game.DrawOffered {
 				drawOffered = "draw offered"
