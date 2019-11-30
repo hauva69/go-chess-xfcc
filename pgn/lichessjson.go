@@ -116,9 +116,5 @@ func EndGameResultFromFEN(fen string) (int, error) {
 		return BlackWin, nil
 	} 
 
-	// FIXME result.Winner when game is drawn
-	log.Printf("BODY=%q", body)
-	log.Printf("RESULT=%v", result.Winner)
-
 	return Unknown, nil
 }

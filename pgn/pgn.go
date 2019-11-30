@@ -7,6 +7,9 @@ import (
 	"github.com/notnil/chess"
 )
 
+// StartingPositionFEN is the FEN for the starting position.
+const StartingPositionFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+
 // Game returns the game from a PGN string
 func Game(pgn string) (*chess.Game, error) {
 	gameFunc, err := chess.PGN(strings.NewReader(pgn))

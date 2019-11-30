@@ -67,6 +67,15 @@ func TestBareKingsDraw(t *testing.T) {
     assert.Equal(t, Draw, result, "The result must be a draw")
 }
 
+func TestStartingPositionEndGameResult(t *testing.T) {
+    result, err := EndGameResultFromFEN(StartingPositionFEN)
+    if err != nil {
+        t.Log(err)
+    }
+
+    assert.Equal(t, Unknown, result, "The result must be Unknown.")
+}
+
 // FewPiecesGame1 is something to be fixed
 // FIXME remove links to the test data
 // FIXME move these to a separate test file
