@@ -40,7 +40,8 @@ func TestWhiteWins(t *testing.T) {
         EventDate: "2019.04.10",
     }
 
-    t.Fatalf("FIXME: %+v", game)
+    result, _ := EndGameResult(game)
+    assert.Equal(t, WhiteWin, result, "Winner must be WhiteWin.")
 }
 
 func TestBlackWins(t *testing.T) {
@@ -50,7 +51,8 @@ func TestBlackWins(t *testing.T) {
         EventDate: "2018.10.01",
     }
 
-    t.Fatalf("FIXME: %+v", game)
+    result, _ := EndGameResult(game)
+    assert.Equal(t, BlackWin, result, "Winner must be BlackWin.")
 }
 
 // FewPiecesGame1 is something to be fixed
