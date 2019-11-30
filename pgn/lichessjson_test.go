@@ -3,7 +3,9 @@ package pgn
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+    "github.com/stretchr/testify/assert"
+    
+    xfcc "github.com/hauva69/go-chess-xfcc"
 )
 
 func TestWin(t *testing.T) {
@@ -29,6 +31,26 @@ func TestBlessedLoss(t *testing.T) {
 func TestLoss(t *testing.T) {
 	const expected = -2
 	assert.Equal(t, expected, Loss)
+}
+
+func TestWhiteWins(t *testing.T) {
+    game := xfcc.Game{
+        Movetext: FewPiecesGame2, 
+        Date: "2019.04.10", 
+        EventDate: "2019.04.10",
+    }
+
+    t.Fatalf("FIXME: %+v", game)
+}
+
+func TestBlackWins(t *testing.T) {
+    game := xfcc.Game{
+        Movetext: FewPiecesGame2, 
+        Date: "2018.10.01", 
+        EventDate: "2018.10.01",
+    }
+
+    t.Fatalf("FIXME: %+v", game)
 }
 
 // FewPiecesGame1 is something to be fixed
