@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 	"text/tabwriter"
 
 	"github.com/docopt/docopt-go"
@@ -78,7 +79,19 @@ func endgame(config configuration.Configuration) {
 
 	for _, game := range games {
 		if game.Result != "Draw" { // && game.MyTurn {
-			fmt.Println(pgn.EndGameResult(game))
+			result, err := pgn.EndGameResult(game)
+			s := "*"
+			if err != nil && !strings.Contains(err.Error(), "no table bases exist") {
+				log.Print(err)
+			} else if result == pgn.Draw {
+				s = "1/2-1/2"
+			} else if result == pgn.WhiteWin {
+				s = "1-0"
+			} else if result == pgn.BlackWin {
+				s = "0-1"
+			}
+
+			fmt.Printf("%s – %s\t%s\n", game.White, game.Black, s)
 		}
 	}
 }
