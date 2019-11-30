@@ -23,6 +23,10 @@ type move struct {
 	DTZ int    `json:"dtz"`
 }
 
+// MaximumPiecesForEndgameResolving is the maximum number of pieces 
+// of endgame tablebases.
+const MaximumPiecesForEndgameResolving = 7
+
 const (
 	// Loss is a loss according to the Syzygy table bases.
 	Loss = (-2 + iota)
@@ -57,8 +61,7 @@ func EndGameResult(game xfcc.Game) (int, error) {
 		return Unknown, err
 	}
 
-	// FIXME replace the magic number
-	if count > 7 {
+	if count > MaximumPiecesForEndgameResolving {
 		msg := fmt.Sprintf("number of pieces is %d, no table bases exist", count)
 		return Unknown, fmt.Errorf(msg)
 	}
