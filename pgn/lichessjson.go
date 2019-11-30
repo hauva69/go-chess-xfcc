@@ -27,6 +27,9 @@ type move struct {
 // of endgame tablebases.
 const MaximumPiecesForEndgameResolving = 7
 
+// FIXME make this configurable
+const mainlineURL = "http://tablebase.lichess.ovh/standard/mainline?fen"
+
 const (
 	// Loss is a loss according to the Syzygy table bases.
 	Loss = (-2 + iota)
@@ -48,7 +51,6 @@ const (
 
 // EndGameResult returns Win, Curse.
 // FIXME move this to a separate library
-// FIXME return an integer (constants)
 // FIXME implement using both standard and standard/mainline endpoints
 // (2) win, (1) cursed win, (0) draw, (-1) blessed loss, (-2) loss, (null) unknown
 // WhiteWin, BlackWin
@@ -79,7 +81,7 @@ func EndGameResult(game xfcc.Game) (int, error) {
 	}
 
 	fen = strings.ReplaceAll(fen, " ", "_")
-	url := fmt.Sprintf("http://tablebase.lichess.ovh/standard/mainline?fen=%s", fen)
+	url := fmt.Sprintf("%s=%s", mainlineURL, fen)
 	resp, err := http.Get(url)
 	if err != nil {
 		return Unknown, err
