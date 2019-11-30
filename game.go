@@ -66,7 +66,7 @@ func (g *Game) PGN() (string, error) {
 		nil
 }
 
-// PGNTemplate is a template for  Portable Game Notation.
+// PGNTemplate is a template for Portable Game Notation.
 const PGNTemplate = `[Event "%s"]
 [Site "%s"]
 [Date "%s"]

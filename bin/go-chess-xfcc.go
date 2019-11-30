@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 	"text/tabwriter"
 
 	"github.com/docopt/docopt-go"
@@ -17,6 +18,7 @@ func main() {
 	
 	Usage:
 		go-chess-xfcc
+		go-chess-xfcc endgame
 		go-chess-xfcc fetch
 		go-chess-xfcc fen [--myturn]
 		go-chess-xfcc list [--myturn]
@@ -38,7 +40,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if arguments["fetch"].(bool) {
+	if arguments["endgame"].(bool) {
+		endgame(config)
+	} else if arguments["fetch"].(bool) {
 		body, err := xfcc.GetMyGamesXML(xfcc.ICCFBaseURL, xfcc.ICCFSOAPMIMEType, config.User, config.Password)
 		if err != nil {
 			log.Fatalf("unable to get the XFCC XML: %s", err)
@@ -67,23 +71,61 @@ func main() {
 	}
 }
 
+func endgame(config configuration.Configuration) {
+	games, err := xfcc.GetMyGames(xfcc.ICCFBaseURL, xfcc.ICCFSOAPMIMEType, config.User, config.Password)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', 0)
+
+	for _, game := range games {
+		if game.Result == "Ongoing" {
+			result, err := pgn.EndGameResult(game)
+			s := "*"
+			if err != nil && !strings.Contains(err.Error(), "no table bases exist") {
+				log.Print(err)
+			} else if result == pgn.Draw {
+				s = "1/2-1/2"
+			} else if result == pgn.WhiteWin {
+				s = "1-0"
+			} else if result == pgn.BlackWin {
+				s = "0-1"
+			}
+			fmt.Fprintln(w,
+				fmt.Sprintf("%s – %s\t%s", game.White, game.Black, s))
+		}
+	}
+
+	w.Flush()
+}
+
 func fen(config configuration.Configuration, myTurn bool) {
 	games, err := xfcc.GetMyGames(xfcc.ICCFBaseURL, xfcc.ICCFSOAPMIMEType, config.User, config.Password)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	for _, game := range games {
-		s, _ := game.PGN()
-		fen, err := pgn.FEN(s)
-		if err != nil {
-			log.Fatal(err)
-		}
+	w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', 0)
 
-		if game.Result != "Draw" && (!myTurn || (myTurn == game.MyTurn)) {
-			fmt.Printf("%s – %s\n%s\n", game.White, game.Black, fen)
+	for _, game := range games {
+		if game.Result == "Ongoing" && (!myTurn || (myTurn == game.MyTurn)) {
+			s, _ := game.PGN()
+			fen, err := pgn.FEN(s)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			fmt.Fprintln(w, fmt.Sprintf(
+				"%s – %s\t%s", 
+				game.White, 
+				game.Black, 
+				fen,
+			))
 		}
 	}
+
+	w.Flush()
 }
 
 func list(config configuration.Configuration, myTurn bool) {
@@ -94,7 +136,7 @@ func list(config configuration.Configuration, myTurn bool) {
 
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', 0)
 	for _, game := range games {
-		if game.Result != "Draw" && (!myTurn || (myTurn == game.MyTurn)) {
+		if game.Result == "Ongoing" && (!myTurn || (myTurn == game.MyTurn)) {
 			drawOffered := "–"
 			if game.DrawOffered {
 				drawOffered = "draw offered"
