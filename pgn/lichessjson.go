@@ -49,11 +49,10 @@ const (
 	BlackWin
 )
 
-// EndGameResult returns Win, Curse.
+// EndGameResult returns WhiteWin, BlackWin, Draw or Unknown and an error.
 // FIXME move this to a separate library
 // FIXME implement using both standard and standard/mainline endpoints
 // (2) win, (1) cursed win, (0) draw, (-1) blessed loss, (-2) loss, (null) unknown
-// WhiteWin, BlackWin, Unknown
 func EndGameResult(game xfcc.Game) (int, error) {
 	pgn, err := game.PGN()
 	if err != nil {
@@ -79,7 +78,7 @@ func EndGameResult(game xfcc.Game) (int, error) {
 }
 
 // EndGameResultFromFEN returns the result of the position as a constant and 
-// an error. Possible return values are WhiteWin, BlackWin and Unknown.
+// an error. Possible return values are WhiteWin, BlackWin, Draw and Unknown.
 func EndGameResultFromFEN(fen string) (int, error) {
 	fen = strings.ReplaceAll(fen, " ", "_")
 	url := fmt.Sprintf("%s=%s", mainlineURL, fen)
