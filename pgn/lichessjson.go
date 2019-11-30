@@ -10,14 +10,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/notnil/chess"
-
 	xfcc "github.com/hauva69/go-chess-xfcc"
 )
 
 type lichessResult struct {
 	Mainline []move `json:"mainline"`
-	Winner   string `json:"winner"`
+	Winner   *string `json:"winner"`
 }
 
 type move struct {
@@ -72,22 +70,17 @@ func EndGameResult(game xfcc.Game) (int, error) {
 		return Unknown, fmt.Errorf(msg)
 	}
 
-	tmpGame, err := Game(pgn)
-	if err != nil {
-		return Unknown, err
-	}
-
 	fen, err := FEN(pgn)
 	if err != nil {
 		return Unknown, err
 	}
 
-	return EndGameResultFromFEN(tmpGame, fen)
+	return EndGameResultFromFEN(fen)
 }
 
 // EndGameResultFromFEN returns the result of the position as a constant and 
 // an error. Possible return values are WhiteWin, BlackWin and Unknown.
-func EndGameResultFromFEN(game *chess.Game, fen string) (int, error) {
+func EndGameResultFromFEN(fen string) (int, error) {
 	fen = strings.ReplaceAll(fen, " ", "_")
 	url := fmt.Sprintf("%s=%s", mainlineURL, fen)
 	resp, err := http.Get(url)
@@ -110,20 +103,23 @@ func EndGameResultFromFEN(game *chess.Game, fen string) (int, error) {
 		return Unknown, errors.New(msg)
 	}
 
-	game.Position().Board().Draw()
 	var result lichessResult
 	err = json.Unmarshal(body, &result)
 	if err != nil {
 		return Unknown, err
 	}
 
-	if result.Winner == "w" {
+	if nil == result.Winner {
+		return Draw, nil
+	} else if "w" == *result.Winner {
 		return WhiteWin, nil
-	} else if result.Winner == "b" {
+	} else if "b" == *result.Winner {
 		return BlackWin, nil
-	}
+	} 
 
 	// FIXME result.Winner when game is drawn
+	log.Printf("BODY=%q", body)
+	log.Printf("RESULT=%v", result.Winner)
 
 	return Unknown, nil
 }

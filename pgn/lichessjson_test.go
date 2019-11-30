@@ -55,6 +55,18 @@ func TestBlackWins(t *testing.T) {
     assert.Equal(t, BlackWin, result, "Winner must be BlackWin.")
 }
 
+// bareKingsDrawFEN is a FEN for position where there are only the two kings.
+const bareKingsDrawFEN = "4k3/8/8/8/8/8/8/4K3 w - - 0 1"
+
+func TestBareKingsDraw(t *testing.T) {
+    result, err := EndGameResultFromFEN(bareKingsDrawFEN)
+    if err != nil {
+        t.Fatal(err)
+    }
+
+    assert.Equal(t, Draw, result, "The result must be a draw")
+}
+
 // FewPiecesGame1 is something to be fixed
 // FIXME remove links to the test data
 // FIXME move these to a separate test file
